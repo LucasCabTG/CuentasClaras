@@ -4,6 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 // TODO: Replace with your own Firebase project's configuration
+console.log("API Key from env:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
