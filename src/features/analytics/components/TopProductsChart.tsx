@@ -19,10 +19,10 @@ export default function TopProductsChart() {
 
     transactions.forEach(tx => {
       tx.items.forEach(item => {
-        if (!productSales[item.productId]) {
-          productSales[item.productId] = { name: item.name, quantity: 0 };
+        if (!productSales[item.itemId]) {
+          productSales[item.itemId] = { name: item.name, quantity: 0 };
         }
-        productSales[item.productId].quantity += item.quantity;
+        productSales[item.itemId].quantity += item.quantity;
       });
     });
 

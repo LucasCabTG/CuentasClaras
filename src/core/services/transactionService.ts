@@ -85,7 +85,7 @@ export const deleteTransaction = async (transaction: Transaction) => {
       }
     } else if (item.type === 'product') {
       // If it's a single product, restore its stock
-      const productRef = doc(db, 'products', item.productId);
+      const productRef = doc(db, 'products', item.itemId);
       batch.update(productRef, { quantity: increment(item.quantity) });
     }
   }

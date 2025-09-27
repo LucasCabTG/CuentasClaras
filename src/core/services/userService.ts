@@ -8,14 +8,20 @@ export const updateUserRole = (uid: string, role: string) => {
   return updateDoc(userDoc, { role });
 };
 
+interface UserData {
+  id: string;
+  email: string;
+  role: string;
+}
+
 // This function is for admins to see their users.
 // We might not need a real-time hook for this, so a simple async function is fine for now.
-export const getUsersForBusiness = async (businessId: string) => {
+export const getUsersForBusiness = async (businessId: string): Promise<UserData[]> => {
   const q = query(usersCollection, where('businessId', '==', businessId));
   const querySnapshot = await getDocs(q);
-  const users: { id: string; [key: string]: unknown }[] = [];
+  const users: UserData[] = [];
   querySnapshot.forEach((doc) => {
-    users.push({ id: doc.id, ...doc.data() });
+    users.push({ id: doc.id, ...doc.data() } as UserData);
   });
   return users;
 };

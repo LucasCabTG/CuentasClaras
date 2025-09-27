@@ -4,15 +4,10 @@ import { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useTransactions } from '@/core/hooks/useTransactions';
 
-interface DailySales {
-  date: string;
-  total: number;
-}
-
 export default function SalesChart() {
   const { transactions, loading, error } = useTransactions();
 
-  const salesData = useMemo((): DailySales[] => {
+  const salesData = useMemo(() => {
     if (!transactions) return [];
 
     const dailySales: { [key: string]: number } = {};

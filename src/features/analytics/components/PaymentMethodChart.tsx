@@ -4,17 +4,12 @@ import { useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useTransactions } from '@/core/hooks/useTransactions';
 
-interface PaymentMethodData {
-  name: string;
-  value: number;
-}
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
 
 export default function PaymentMethodChart() {
   const { transactions, loading, error } = useTransactions();
 
-  const paymentMethodData = useMemo((): PaymentMethodData[] => {
+  const paymentMethodData = useMemo(() => {
     if (!transactions) return [];
 
     const paymentCounts: { [key: string]: number } = {};
@@ -55,7 +50,8 @@ export default function PaymentMethodChart() {
             fill="#8884d8"
             dataKey="value"
             nameKey="name"
-            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
           >
             {paymentMethodData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

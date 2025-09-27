@@ -15,13 +15,7 @@ import Modal from '@/core/components/Modal';
 
 
 import PromotionSuggestionToast from './PromotionSuggestionToast';
-
-interface CartItem extends Omit<Product, 'id'> {
-  id: string; // Can be product or promotion id
-  type: 'product' | 'promotion';
-  quantityInCart: number;
-  bundleItems?: { productId: string; quantity: number }[];
-}
+import { CartItem } from '@/core/types/CartItem';
 
 type SearchResult = (Product & { type: 'product' }) | (Promotion & { type: 'promotion' });
 

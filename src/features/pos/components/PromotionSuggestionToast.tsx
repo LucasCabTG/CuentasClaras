@@ -12,7 +12,7 @@ interface PromotionSuggestionToastProps {
 
 export default function PromotionSuggestionToast({ promotions, onApplyPromotion, onDismiss }: PromotionSuggestionToastProps) {
   const toastRef = useRef<HTMLDivElement>(null);
-  useDraggable(toastRef);
+  useDraggable(toastRef as React.RefObject<HTMLElement>);
 
   if (promotions.length === 0) {
     return null;

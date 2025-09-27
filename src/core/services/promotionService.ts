@@ -13,6 +13,7 @@ export interface PromotionInput {
   price: number;
   bundleItems: BundleItem[];
   businessId: string;
+  allowedPaymentMethods: string[];
 }
 
 const promotionsCollection = collection(db, 'promotions');

@@ -1,11 +1,7 @@
 'use client';
 
-import { Product } from "@/core/hooks/useProducts";
 import { Customer } from "@/core/services/customerService";
-
-interface CartItem extends Product {
-  quantityInCart: number;
-}
+import { CartItem } from "@/core/types/CartItem";
 
 interface CartProps {
   cart: CartItem[];
