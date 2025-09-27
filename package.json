@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "ts-node scripts/seed.ts"
+    "seed": "ts-node scripts/seed.ts",
+    "postinstall": "cd functions && npm install"
   },
   "dependencies": {
     "@types/recharts": "^1.8.29",
