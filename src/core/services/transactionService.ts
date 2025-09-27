@@ -1,15 +1,7 @@
 import { collection, writeBatch, doc, Timestamp, increment } from 'firebase/firestore';
 import { db } from './firebase';
 import { Transaction } from '../hooks/useTransactions';
-
-interface CartItem {
-  id: string;
-  name: string;
-  type: 'product' | 'promotion';
-  quantityInCart: number;
-  salePrice: number;
-  bundleItems?: { productId: string; quantity: number }[];
-}
+import { CartItem } from '../types/CartItem';
 
 export const createTransaction = async (
   cart: CartItem[], 

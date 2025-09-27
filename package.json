@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cd functions && npm install && cd .. && next build --no-lint",
+    "build": "next build --no-lint",
     "start": "next start",
     "lint": "eslint",
     "seed": "ts-node scripts/seed.ts"
@@ -16,20 +16,24 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "recharts": "^3.2.1",
-    "firebase-admin": "^12.1.1"
+    "firebase-admin": "^12.1.1",
+    "firebase-functions": "^5.1.1",
+    "nodemailer": "^6.9.13"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.4",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.3",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0"
+    "@types/nodemailer": "^6.4.15",
+    "globals": "^15.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^7.7.0",
+    "eslint-plugin-react": "^7.34.1"
   }
 }
