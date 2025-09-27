@@ -25,11 +25,13 @@ interface CartItem extends Omit<Product, 'id'> {
 
 type SearchResult = (Product & { type: 'product' }) | (Promotion & { type: 'promotion' });
 
+const ALL_PAYMENT_METHODS = ['Efectivo', 'Tarjeta', 'Débito', 'QR', 'Transferencia'];
+
 export default function Terminal() {
   const { user } = useAuthContext();
   const { products, loading: productsLoading, error: productsError } = useProducts();
   const { promotions, loading: promotionsLoading, error: promotionsError } = usePromotions();
-  const { customers, loading: customersLoading, error: customersError } = useCustomers();
+  const { customers } = useCustomers();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -52,14 +54,12 @@ export default function Terminal() {
     );
   }, [customers, customerSearch]);
 
-  const ALL_PAYMENT_METHODS = ['Efectivo', 'Tarjeta', 'Débito', 'QR', 'Transferencia'];
-
   useEffect(() => {
     const promotionsInCart = cart.filter(item => item.type === 'promotion') as (CartItem & Promotion)[];
     
     if (promotionsInCart.length > 0) {
-      let allowedMethods = promotionsInCart.map(promo => promo.allowedPaymentMethods || ALL_PAYMENT_METHODS);
-      let intersection = allowedMethods.reduce((acc, methods) => acc.filter(method => methods.includes(method)));
+      const allowedMethods = promotionsInCart.map(promo => promo.allowedPaymentMethods || ALL_PAYMENT_METHODS);
+      const intersection = allowedMethods.reduce((acc, methods) => acc.filter(method => methods.includes(method)));
       
       setAvailablePaymentMethods(intersection);
 

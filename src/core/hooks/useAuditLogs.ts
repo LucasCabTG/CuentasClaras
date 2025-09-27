@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot, DocumentData, QueryDocumentSnapshot, orderBy } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, DocumentData, QueryDocumentSnapshot, orderBy, Timestamp } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { useAuthContext } from '@/core/context/AuthContext';
 
@@ -11,7 +11,7 @@ export interface AuditLog {
   userEmail: string;
   details: string;
   businessId: string;
-  createdAt: any; // Firestore Timestamp
+  createdAt: Timestamp; // Firestore Timestamp
 }
 
 interface AuditLogsState {

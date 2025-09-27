@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-import { db, auth } from '@/core/services/firebase';
+import { db } from '@/core/services/firebase';
 import { useAuthContext } from '../context/AuthContext';
 
 export interface Product {

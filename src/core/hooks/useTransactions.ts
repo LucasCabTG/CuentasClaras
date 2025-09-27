@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot, DocumentData, QueryDocumentSnapshot, orderBy } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, DocumentData, QueryDocumentSnapshot, orderBy, Timestamp } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { useAuthContext } from '../context/AuthContext';
 
 interface TransactionItem {
-  productId: string;
+  itemId: string;
   name: string;
+  type: 'product' | 'promotion';
   quantity: number;
   salePrice: number;
+  bundleItems?: { productId: string; quantity: number }[];
 }
 
 export interface Transaction {
@@ -18,7 +20,7 @@ export interface Transaction {
   paymentMethod: string;
   total: number;
   items: TransactionItem[];
-  createdAt: any; // Firestore Timestamp
+  createdAt: Timestamp; // Firestore Timestamp
   customerId?: string;
   customerName?: string;
 }

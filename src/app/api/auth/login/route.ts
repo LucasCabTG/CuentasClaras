@@ -12,7 +12,12 @@ export async function POST(request: Request) {
     // Check if user exists and password matches (in a real app, compare hashes)
     if (user && user.password_hash === password) {
       // Don't send the password hash back to the client
-      const { password_hash, ...userWithoutPassword } = user;
+      const userWithoutPassword = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
       return NextResponse.json({ user: userWithoutPassword });
     } else {
       // If credentials are wrong, return an error
@@ -21,7 +26,7 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { message: 'An unexpected error occurred' },
       { status: 500 }

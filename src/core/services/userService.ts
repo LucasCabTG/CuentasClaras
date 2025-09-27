@@ -13,7 +13,7 @@ export const updateUserRole = (uid: string, role: string) => {
 export const getUsersForBusiness = async (businessId: string) => {
   const q = query(usersCollection, where('businessId', '==', businessId));
   const querySnapshot = await getDocs(q);
-  const users: { id: string; [key: string]: any }[] = [];
+  const users: { id: string; [key: string]: unknown }[] = [];
   querySnapshot.forEach((doc) => {
     users.push({ id: doc.id, ...doc.data() });
   });

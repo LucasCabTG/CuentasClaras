@@ -18,7 +18,7 @@ export default function LoginForm() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // The user will be redirected by the auth state listener in the root layout or page
-    } catch (error: any) {
+    } catch (error) {
       setError('Error al iniciar sesión. Verifica tus credenciales.');
       console.error(error);
     } finally {

@@ -11,7 +11,7 @@ interface Position {
 export function useDraggable(elRef: RefObject<HTMLElement>): void {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
-  const dragInfo = useRef<{ startX: number; startY: number; lastX: number; lastY: number }>();
+  const dragInfo = useRef<{ startX: number; startY: number; lastX: number; lastY: number } | null>(null);
 
   useEffect(() => {
     const el = elRef.current;

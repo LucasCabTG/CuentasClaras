@@ -12,7 +12,7 @@ interface DailySales {
 export default function SalesChart() {
   const { transactions, loading, error } = useTransactions();
 
-  const salesData = useMemo(() => {
+  const salesData = useMemo((): DailySales[] => {
     if (!transactions) return [];
 
     const dailySales: { [key: string]: number } = {};

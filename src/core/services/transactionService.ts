@@ -1,14 +1,14 @@
 import { collection, writeBatch, doc, Timestamp, increment } from 'firebase/firestore';
 import { db } from './firebase';
-import { Product } from '../hooks/useProducts';
 import { Transaction } from '../hooks/useTransactions';
 
 interface CartItem {
   id: string;
+  name: string;
   type: 'product' | 'promotion';
   quantityInCart: number;
+  salePrice: number;
   bundleItems?: { productId: string; quantity: number }[];
-  [key: string]: any; // Allow other product/promotion properties
 }
 
 export const createTransaction = async (
@@ -24,7 +24,7 @@ export const createTransaction = async (
   const transactionRef = doc(collection(db, 'transactions'));
   const total = cart.reduce((sum, item) => sum + item.salePrice * item.quantityInCart, 0);
   
-  const transactionData: any = {
+  const baseTransactionData = {
     businessId,
     paymentMethod,
     total,
@@ -39,12 +39,11 @@ export const createTransaction = async (
     createdAt: Timestamp.now(),
   };
 
-  if (customerId) {
-    transactionData.customerId = customerId;
-  }
-  if (customerName) {
-    transactionData.customerName = customerName;
-  }
+  const transactionData = {
+    ...baseTransactionData,
+    ...(customerId && { customerId }),
+    ...(customerName && { customerName }),
+  };
 
   batch.set(transactionRef, transactionData);
 

@@ -14,7 +14,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
 export default function PaymentMethodChart() {
   const { transactions, loading, error } = useTransactions();
 
-  const paymentMethodData = useMemo(() => {
+  const paymentMethodData = useMemo((): PaymentMethodData[] => {
     if (!transactions) return [];
 
     const paymentCounts: { [key: string]: number } = {};
