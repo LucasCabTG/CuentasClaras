@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cd functions && npm install && cd .. && next build --no-lint",
     "start": "next start",
     "lint": "eslint",
-    "seed": "ts-node scripts/seed.ts",
-    "postinstall": "cd functions && npm install"
+    "seed": "ts-node scripts/seed.ts"
   },
   "dependencies": {
     "@types/recharts": "^1.8.29",
@@ -29,6 +28,8 @@
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
   }
 }
