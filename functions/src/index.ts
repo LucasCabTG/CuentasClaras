@@ -56,3 +56,37 @@ export const sendFeedbackEmail = functions.firestore
         );
       }
     });
+
+// Scheduled function to clean up old audit logs
+export const cleanupOldAuditLogs = functions.pubsub
+    .schedule("every 24 hours") // Runs once a day
+    .onRun(async (context) => {
+      const now = admin.firestore.Timestamp.now();
+      const twoDaysAgo = new admin.firestore.Timestamp(
+          now.seconds - 48 * 60 * 60, // 48 hours in seconds
+          now.nanoseconds
+      );
+
+      const auditLogsRef = admin.firestore().collection("auditLogs");
+      const oldLogsQuery = auditLogsRef.where("timestamp", "<=", twoDaysAgo);
+
+      try {
+        const snapshot = await oldLogsQuery.get();
+        if (snapshot.empty) {
+          functions.logger.log("No hay registros de auditoría antiguos para eliminar.");
+          return null;
+        }
+
+        const batch = admin.firestore().batch();
+        snapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        await batch.commit();
+        functions.logger.log(`Se eliminaron ${snapshot.size} registros de auditoría antiguos.`);
+        return null;
+      } catch (error) {
+        functions.logger.error("Error al limpiar los registros de auditoría antiguos:", error);
+        return null;
+      }
+    });

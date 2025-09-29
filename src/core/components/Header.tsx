@@ -5,16 +5,12 @@ import { useAuthContext } from '@/core/context/AuthContext';
 import { auth } from '@/core/services/firebase';
 
 export default function Header({ toggleSidebar }: { toggleSidebar: () => void }) {
-  const { user } = useAuthContext();
+  const { user, activeProfile, logout, clearActiveProfile } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      router.replace('/login');
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
+    await logout();
+    router.replace('/login');
   };
 
   return (
@@ -38,8 +34,14 @@ export default function Header({ toggleSidebar }: { toggleSidebar: () => void })
         </button>
         <h1 className="text-xl font-semibold">Cuentas Claras</h1>
       </div>
-      <div className="flex items-center">
-        {user && <span className="text-gray-600 mr-4 hidden md:block">{user.email}</span>}
+      <div className="flex items-center gap-4">
+        {activeProfile && <span className="text-gray-600 hidden md:block">{activeProfile.name}</span>}
+        <button
+          onClick={() => clearActiveProfile()}
+          className="text-sm text-gray-600 hover:text-blue-600"
+        >
+          Cambiar Perfil
+        </button>
         <button
           onClick={handleLogout}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

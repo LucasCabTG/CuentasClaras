@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,7 +11,7 @@ interface EditCustomerFormProps {
 }
 
 export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel }: EditCustomerFormProps) {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const [name, setName] = useState(customer.name);
   const [email, setEmail] = useState(customer.email || '');
   const [phone, setPhone] = useState(customer.phone || '');
@@ -32,8 +31,8 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
     setError(null);
     setSuccess(null);
 
-    if (!user) {
-      setError('Debes iniciar sesión para editar un cliente.');
+    if (!user || !activeProfile) {
+      setError('Debes iniciar sesión y seleccionar un perfil para editar un cliente.');
       return;
     }
 
@@ -43,7 +42,7 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
     }
 
     try {
-      await updateCustomer(customer.id, { name, email, phone, address }, user.email || 'N/A', user.uid);
+      await updateCustomer(customer.id, { name, email, phone, address }, user.email || 'N/A', activeProfile.name, user.uid);
       setSuccess(`Cliente "${name}" actualizado con éxito.`);
       onCustomerUpdated();
     } catch (err) {
@@ -67,7 +66,7 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input"
               required
             />
           </div>
@@ -79,7 +78,7 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input"
             />
           </div>
 
@@ -90,7 +89,7 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input"
             />
           </div>
 
@@ -101,7 +100,7 @@ export default function EditCustomerForm({ customer, onCustomerUpdated, onCancel
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input"
             />
           </div>
 

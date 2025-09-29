@@ -1,4 +1,4 @@
-import { collection, writeBatch, doc, Timestamp, increment } from 'firebase/firestore';
+import { collection, writeBatch, doc, Timestamp, increment, getDocs, query, where } from 'firebase/firestore';
 import { db } from './firebase';
 import { Transaction } from '../hooks/useTransactions';
 import { CartItem } from '../types/CartItem';
@@ -67,21 +67,42 @@ export const deleteTransaction = async (transaction: Transaction) => {
   batch.delete(transactionRef);
 
   // 2. Restore the stock for each product in the transaction
+  // First, get all unique product IDs from the transaction
+  const productIds = new Set<string>();
+  transaction.items.forEach(item => {
+    if (item.type === 'product') {
+      productIds.add(item.itemId);
+    } else if (item.type === 'promotion' && item.bundleItems) {
+      item.bundleItems.forEach(bundle => productIds.add(bundle.productId));
+    }
+  });
+
+  // Find which of these products still exist
+  const existingProductIds = new Set<string>();
+  if (productIds.size > 0) {
+    const productsQuery = query(collection(db, 'products'), where('__name__', 'in', Array.from(productIds)));
+    const querySnapshot = await getDocs(productsQuery);
+    querySnapshot.forEach(doc => existingProductIds.add(doc.id));
+  }
+
+  // 3. Restore stock only for products that still exist
   for (const item of transaction.items) {
     if (item.type === 'promotion' && item.bundleItems) {
-      // If it's a promotion, restore stock for each item in the bundle
       for (const bundleItem of item.bundleItems) {
-        const productRef = doc(db, 'products', bundleItem.productId);
-        const quantityToRestore = bundleItem.quantity * item.quantity; // item.quantity is the quantity of the bundle sold
-        batch.update(productRef, { quantity: increment(quantityToRestore) });
+        if (existingProductIds.has(bundleItem.productId)) {
+          const productRef = doc(db, 'products', bundleItem.productId);
+          const quantityToRestore = bundleItem.quantity * item.quantity;
+          batch.update(productRef, { quantity: increment(quantityToRestore) });
+        }
       }
     } else if (item.type === 'product') {
-      // If it's a single product, restore its stock
-      const productRef = doc(db, 'products', item.itemId);
-      batch.update(productRef, { quantity: increment(item.quantity) });
+      if (existingProductIds.has(item.itemId)) {
+        const productRef = doc(db, 'products', item.itemId);
+        batch.update(productRef, { quantity: increment(item.quantity) });
+      }
     }
   }
 
-  // 3. Commit the batch
+  // 4. Commit the batch
   await batch.commit();
 };

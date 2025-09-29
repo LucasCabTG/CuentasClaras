@@ -7,7 +7,7 @@ import { useAuthContext } from '@/core/context/AuthContext';
 import { logAction } from '@/core/services/auditService';
 
 export default function TransactionList() {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const { transactions, loading, error } = useTransactions();
   const [feedback, setFeedback] = useState<{type: 'success' | 'error', message: string} | null>(null);
 
@@ -15,10 +15,11 @@ export default function TransactionList() {
     if (window.confirm(`¿Estás seguro de que quieres eliminar esta transacción? Esta acción devolverá los productos al stock.`)) {
       try {
         await deleteTransaction(transaction);
-        if (user) {
+        if (user && activeProfile) {
           await logAction({
             action: 'delete_transaction',
             userEmail: user.email || 'N/A',
+            profileName: activeProfile.name,
             businessId: user.uid,
             details: `Transacción eliminada: ID ${transaction.id}, Total: ${transaction.total.toFixed(2)}`
           });

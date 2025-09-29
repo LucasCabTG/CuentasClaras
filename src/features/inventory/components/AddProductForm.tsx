@@ -32,6 +32,11 @@ export default function AddProductForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!product.name.trim() || product.salePrice <= 0 || product.quantity <= 0) {
+      setError('Por favor, completa todos los campos obligatorios: Nombre, Precio de Venta y Cantidad deben ser mayores a 0.');
+      return;
+    }
+
     if (!auth.currentUser) {
       setError('Debes iniciar sesión para agregar productos.');
       return;
@@ -75,7 +80,7 @@ export default function AddProductForm() {
         <div>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto</label>
-            <input type="text" className="input text-gray-900" />
+            <input type="text" name="name" value={product.name} onChange={handleChange} required className="input text-gray-900" />
           </div>
           <div className="mb-4">
             <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">Categoría</label>
@@ -83,11 +88,11 @@ export default function AddProductForm() {
           </div>
           <div className="mb-4">
             <label htmlFor="purchasePrice" className="block text-gray-700 text-sm font-bold mb-2">Precio de Compra</label>
-            <input type="number" name="purchasePrice" value={product.purchasePrice} onChange={handleChange} required className="input" step="0.01" />
+            <input type="number" name="purchasePrice" value={product.purchasePrice} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" step="0.01" />
           </div>
           <div className="mb-4">
             <label htmlFor="salePrice" className="block text-gray-700 text-sm font-bold mb-2">Precio de Venta</label>
-            <input type="number" name="salePrice" value={product.salePrice} onChange={handleChange} required className="input" step="0.01" />
+            <input type="number" name="salePrice" value={product.salePrice} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" step="0.01" />
           </div>
         </div>
 
@@ -95,7 +100,7 @@ export default function AddProductForm() {
         <div>
           <div className="mb-4">
             <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Cantidad</label>
-            <input type="number" name="quantity" value={product.quantity} onChange={handleChange} required className="input" />
+            <input type="number" name="quantity" value={product.quantity} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" />
           </div>
           <div className="mb-4">
             <label htmlFor="distributor" className="block text-gray-700 text-sm font-bold mb-2">Distribuidor</label>

@@ -12,7 +12,7 @@ interface UserData {
 }
 
 export default function UserList() {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const [users, setUsers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export default function UserList() {
 
   const handleSaveRole = async (uid: string) => {
     const newRole = editingRole[uid];
-    if (!newRole || !user) return;
+    if (!newRole || !user || !activeProfile) return;
 
     const targetUser = users.find(u => u.id === uid);
     if (!targetUser) return;
@@ -43,6 +43,7 @@ export default function UserList() {
       await logAction({
         action: 'change_role',
         userEmail: user.email || 'N/A',
+        profileName: activeProfile.name,
         businessId: user.uid,
         details: `Rol de ${targetUser.email} cambiado a ${newRole}`
       });

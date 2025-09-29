@@ -66,11 +66,11 @@ export default function EditProductForm({ product, onClose, onSuccess }: EditPro
             </div>
             <div className="mb-4">
               <label htmlFor="purchasePrice" className="block text-gray-700 text-sm font-bold mb-2">Precio de Compra</label>
-              <input type="number" name="purchasePrice" value={formData.purchasePrice} onChange={handleChange} required className="input" step="0.01" />
+              <input type="number" name="purchasePrice" value={formData.purchasePrice} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" step="0.01" />
             </div>
             <div className="mb-4">
               <label htmlFor="salePrice" className="block text-gray-700 text-sm font-bold mb-2">Precio de Venta</label>
-              <input type="number" name="salePrice" value={formData.salePrice} onChange={handleChange} required className="input" step="0.01" />
+              <input type="number" name="salePrice" value={formData.salePrice} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" step="0.01" />
             </div>
           </div>
 
@@ -78,7 +78,7 @@ export default function EditProductForm({ product, onClose, onSuccess }: EditPro
           <div>
             <div className="mb-4">
               <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Cantidad</label>
-              <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} required className="input" />
+              <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} onFocus={(e) => e.target.select()} required className="input" />
             </div>
             <div className="mb-4">
               <label htmlFor="distributor" className="block text-gray-700 text-sm font-bold mb-2">Distribuidor</label>

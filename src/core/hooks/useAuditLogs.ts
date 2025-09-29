@@ -9,6 +9,7 @@ export interface AuditLog {
   id: string;
   action: string;
   userEmail: string;
+  profileName?: string; // Optional: The name of the profile that performed the action
   details: string;
   businessId: string;
   createdAt: Timestamp; // Firestore Timestamp
@@ -35,16 +36,21 @@ export function useAuditLogs(): AuditLogsState {
     }
 
     const q = query(
-      collection(db, 'audit_logs'), 
+      collection(db, 'auditLogs'), // Corrected collection name
       where('businessId', '==', user.uid),
-      orderBy('createdAt', 'desc')
+      orderBy('timestamp', 'desc') // Assuming the field is named timestamp as per auditService
     );
 
     const unsubscribe = onSnapshot(q, 
       (querySnapshot) => {
         const logs: AuditLog[] = [];
         querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-          logs.push({ id: doc.id, ...doc.data() } as AuditLog);
+          const data = doc.data();
+          logs.push({ 
+            id: doc.id, 
+            ...data,
+            createdAt: data.timestamp // Ensure createdAt field is correctly mapped from timestamp
+          } as AuditLog);
         });
         setLogsState({ logs, loading: false, error: null });
       },

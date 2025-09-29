@@ -19,8 +19,8 @@ export default function LoginForm() {
       await signInWithEmailAndPassword(auth, email, password);
       // The user will be redirected by the auth state listener in the root layout or page
     } catch (error) {
+      console.error('Login API Error:', error);
       setError('Error al iniciar sesión. Verifica tus credenciales.');
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="input shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="tu@email.com"
         />
       </div>
@@ -57,7 +57,7 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="input shadow appearance-none border rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="******************"
         />
       </div>

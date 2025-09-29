@@ -9,7 +9,7 @@ import Modal from '@/core/components/Modal';
 import EditProductForm from './EditProductForm';
 
 export default function ProductList() {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const { products, loading, error } = useProducts();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [feedback, setFeedback] = useState<{type: 'success' | 'error', message: string} | null>(null);
@@ -18,10 +18,11 @@ export default function ProductList() {
     if (window.confirm(`¿Estás seguro de que quieres eliminar el producto "${productName}"?`)) {
       try {
         await deleteProduct(productId);
-        if (user) {
+        if (user && activeProfile) {
           await logAction({ 
             action: 'delete_product', 
             userEmail: user.email || 'N/A', 
+            profileName: activeProfile.name,
             businessId: user.uid, 
             details: `Producto eliminado: ${productName} (ID: ${productId})` 
           });
@@ -76,19 +77,21 @@ export default function ProductList() {
                 <td className="py-3 px-4">{product.category}</td>
                 <td className="py-3 px-4">${(product.salePrice ?? 0).toFixed(2)}</td>
                 <td className="py-3 px-4 text-center">{product.quantity}</td>
-                <td className="py-3 px-4">
-                  <button 
-                    onClick={() => setEditingProduct(product)}
-                    className="text-blue-500 hover:text-blue-700 text-sm mr-2"
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(product.id, product.name)}
-                    className="text-red-500 hover:text-red-700 text-sm"
-                  >
-                    Eliminar
-                  </button>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  <div className="flex items-center space-x-2">
+                    <button 
+                      onClick={() => setEditingProduct(product)}
+                      className="text-blue-500 hover:text-blue-700 text-sm"
+                    >
+                      Editar
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(product.id, product.name)}
+                      className="text-red-500 hover:text-red-700 text-sm"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

@@ -8,7 +8,7 @@ import AddCustomerForm from './AddCustomerForm';
 import EditCustomerForm from './EditCustomerForm';
 
 export default function CustomerList() {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const { customers, loading, error } = useCustomers();
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
@@ -29,8 +29,8 @@ export default function CustomerList() {
   const handleDelete = async (customerId: string) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
       try {
-        if (!user) throw new Error('Usuario no autenticado');
-        await deleteCustomer(customerId, user.email || 'N/A', user.uid);
+        if (!user || !activeProfile) throw new Error('Usuario o perfil no autenticado');
+        await deleteCustomer(customerId, user.email || 'N/A', activeProfile.name, user.uid);
         setFeedback({ type: 'success', message: 'Cliente eliminado con éxito.' });
         setTimeout(() => setFeedback(null), 3000);
       } catch (err) {

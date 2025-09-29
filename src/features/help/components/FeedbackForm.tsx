@@ -79,10 +79,6 @@ export default function FeedbackForm() {
           {loading ? 'Enviando...' : 'Enviar Mensaje'}
         </button>
       </form>
-      <style jsx>{`
-        .input { box-shadow: inset 0 1px 2px rgba(0,0,0,0.07); appearance: none; border-radius: 0.375rem; border: 1px solid #d1d5db; width: 100%; padding: 0.5rem 0.75rem; color: #374151; line-height: 1.5; }
-        .input:focus { outline: none; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); border-color: #3b82f6; }
-      `}</style>
     </div>
   );
 }

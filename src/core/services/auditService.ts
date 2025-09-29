@@ -4,14 +4,15 @@ import { db } from './firebase';
 export interface AuditLogInput {
   action: string;
   userEmail: string;
-  details: string;
+  profileName: string; // Name of the active profile/seller
   businessId: string;
+  details?: string;
 }
 
 export const logAction = (logData: AuditLogInput) => {
-  const auditLogCollection = collection(db, 'audit_logs');
-  return addDoc(auditLogCollection, {
+  const auditLogsCollection = collection(db, 'auditLogs');
+  return addDoc(auditLogsCollection, {
     ...logData,
-    createdAt: Timestamp.now(),
+    timestamp: Timestamp.now(),
   });
 };

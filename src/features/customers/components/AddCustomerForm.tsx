@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -10,7 +9,7 @@ interface AddCustomerFormProps {
 }
 
 export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProps) {
-  const { user } = useAuthContext();
+  const { user, activeProfile } = useAuthContext();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,8 +20,8 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
     e.preventDefault();
     setError(null);
 
-    if (!user) {
-      setError('Debes iniciar sesión para agregar un cliente.');
+    if (!user || !activeProfile) {
+      setError('Debes iniciar sesión y seleccionar un perfil para agregar un cliente.');
       return;
     }
 
@@ -38,7 +37,7 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
         email, 
         phone, 
         address 
-      }, user.email || 'N/A');
+      }, user.email || 'N/A', activeProfile.name);
       
       onCustomerAdded(newCustomerId);
     } catch (err) {
@@ -59,7 +58,7 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="input"
           required
         />
       </div>
@@ -71,7 +70,7 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="input"
         />
       </div>
 
@@ -82,7 +81,7 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="input"
         />
       </div>
 
@@ -93,7 +92,7 @@ export default function AddCustomerForm({ onCustomerAdded }: AddCustomerFormProp
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="input"
         />
       </div>
 

@@ -33,7 +33,7 @@ export default function AuditLogList() {
               {logs.map(log => (
                 <tr key={log.id} className="border-b">
                   <td className="py-3 px-4">{new Date(log.createdAt.seconds * 1000).toLocaleString()}</td>
-                  <td className="py-3 px-4">{log.userEmail}</td>
+                  <td className="py-3 px-4 font-medium">{log.profileName || log.userEmail}</td>
                   <td className="py-3 px-4">{log.action}</td>
                   <td className="py-3 px-4">{log.details}</td>
                 </tr>

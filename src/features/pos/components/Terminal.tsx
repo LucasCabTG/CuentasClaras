@@ -248,7 +248,7 @@ export default function Terminal() {
             placeholder="Buscar producto o promoción..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+            className="input"
           />
         </div>
         <div className="overflow-y-auto flex-grow">
