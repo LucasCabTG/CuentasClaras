@@ -31,7 +31,7 @@ export const initAdmin = async () => {
     };
 
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount as admin.ServiceAccountInfo),
+      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
     });
   }
 
